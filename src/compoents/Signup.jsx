@@ -10,11 +10,11 @@ import {useForm} from 'react-hook-form'
 function Signup() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const [error, setError] = useState(null) //null nahi toh empty string bhi de sakte h
-    const [register, handleSumbit] = useForm()
+    const [error, setError] = useState("") //null nahi toh empty string bhi de sakte h
+    const {register, handleSubmit} = useForm()
 
     const create = async(data) => {
-        setError(null)
+        setError("")
         try {
             const signup = await authService.createAccount(data)
             if(signup) {
@@ -45,7 +45,7 @@ function Signup() {
                     </Link>
             </p>
             {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-            <form onSubmit={handleSumbit(create)}>
+            <form onSubmit={handleSubmit(create)}>
             <div className='space-y-5'>
                 {/* Input for name */}
                   <Input 
