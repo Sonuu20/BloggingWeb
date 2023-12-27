@@ -11,7 +11,7 @@ function Login() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm()
-    const {error, setError} = useState("")  //null nahi toh empty string bhi de sakte h
+    const [error, setError] = useState("")  //null nahi toh empty string bhi de sakte h
 
     const login = async(data) => {
         setError("")
