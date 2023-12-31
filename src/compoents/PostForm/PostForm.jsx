@@ -1,76 +1,81 @@
-import React, {useCallback, useEffect} from 'react'
-import {Button, Input, Select, RTE} from '../index'
-import service from '../../appwrite/conf'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { useForm } from 'react-hook-form'
+import React, {useCallback, useEffect} from 'react';
+import { useForm } from 'react-hook-form';
+import service from '../../appwrite/conf';
+import {Button, Input, Select, RTE} from '../index';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function PostForm({post}) {
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues: {
             title: post?.title || '',
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content: post?.content || '',
-            status: post?.status || 'active'
-        }
-    })
+            status: post?.status || 'active',
+        },
+    });
 
-    const navigate = useNavigate()
-    const userData = useSelector(state => state.user.userData)
+    const navigate = useNavigate();
+    const userDetails = useSelector((state) => state.auth.userData);
 
-    // through this submit the post is being created, if the user is modifying the post is already present then
+    // through this submit the post is being created, if the user is modifying the post that is already present then
     // then the modified value will only be overwrite otherwise the new value will be updated
     const submit = async (data) => {
-      if(post) {
-        const file = data.image[0] ? await service.uploadFile(data.image[0]) : null
-        if(file){
-          service.deleteFile(post.image)
+      if (post) {
+        const file = data.image[0]
+          ? await service.uploadFile(data.image[0])
+          : null;
+  
+        if (file) {
+          service.deleteFile(post.image);
         }
-
-        const dbPost = await service.updatePost(post.$id,
-          {
-            ...data,
-            Image: file ? file.id : undefined, //agr error aata h toh Image ko image me kr dena
-          })
-          if(dbPost) { //yaha error ho sakta h
-            navigate(`/post/${dbPost.$id}`)
-          }
-      }else{
+  
+        const dbPost = await service.updatePost(post.$id, {
+          ...data,
+          image: file ? file.$id : undefined,
+        });
+  
+        if (dbPost) {
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } else{
         const file = await service.uploadFile(data.image[0]);
-        if(file) {
+  
+        if (file) {
           const fileId = file.$id;
           data.image = fileId;
           const dbPost = await service.createPost({
             ...data,
-            userid: userData.$id
-          })
-          if(dbPost){
-            navigate(`post/${dbPost.$id}`)
+            userid: userDetails.$id,
+          });
+  
+          if (dbPost) {
+            navigate(`/post/${dbPost.$id}`);
           }
         }
       }
-    }
+    };
+    
 
     //slugTransform method
     const slugTransform = useCallback((value) => {
-      if(value && typeof value === 'string'){
-        return value
-        .trim()
-        .toLowerCase()
-        .replace(/^[a-zA-Z\d\s]+/g, '-')
-        .replace(/\s/g, '-')
-      }else{
-        return ''
-      }
-    },[])
+      if (value && typeof value === "string")
+          return value
+              .trim()
+              .toLowerCase()
+              .replace(/[^a-zA-Z\d\s]+/g, "-")
+              .replace(/\s/g, "-");
+
+      return "";
+  }, []);
 
     useEffect(() => {
       const subscription = watch((value,{name}) => {
         if(name === 'title') {
-          setValue('slug', slugTransform(value.title,
-            {shouldValidate: true}))
+          setValue('slug', slugTransform(value.title),
+            {shouldValidate: true});
         }
-      })
+      });
 
       return () => {
         subscription.unsubscribe()
@@ -117,14 +122,14 @@ function PostForm({post}) {
 
         {post && (
           <div className='w-full mb-4'>
-            <img src={service.getFilePreview} alt={post.title} className='rounded-lg' />
+            <img src={service.getFilePreview(post.image)} alt={post.title} className='rounded-lg' />
           </div>
         )}
         
         <Select 
         options={["active", "inactive"]}
         label="Status"
-        className="mb-4"
+        className="mb-8 w-full"
         {...register("status", {required: true})}
         />
 
@@ -137,7 +142,7 @@ function PostForm({post}) {
         </Button>
       </div>
     </form>
-  )
+  );
 }
 
 export default PostForm
