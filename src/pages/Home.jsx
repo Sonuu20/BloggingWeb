@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import service from '../appwrite/conf'
-import { Container, PostCard } from '../compoents'
+import { Container, PostCard } from '../compoents/index'
 
 function Home() {
     const [posts, setPost] = useState([])
 
     useEffect(() => {
         service.getPosts()
-        .then((post) => {
-            if(post){
-                setPost(post.documents)
+        .then((posts) => {
+            if(posts){
+                setPost(posts.documents)
             }
         })
     },[])
@@ -19,7 +19,9 @@ function Home() {
             <Container>
                 <div className='flex flex-wrap'>
                     <div className='p-2 w-full'>
-                        <h1 className='text-2xl font-bold hover:text-gray-500'>Login to read posts</h1>
+                        <h1 className='text-2xl font-bold hover:text-gray-500'>
+                            Login to read posts
+                        </h1>
                     </div>
                 </div>
             </Container>
@@ -33,7 +35,7 @@ function Home() {
                 <div className='flex flex-wrap'>
                     {posts.map((post) => (
                         <div key={post.$id} className='p-2 w-1/4'>
-                            <PostCard {...posts}/>
+                            <PostCard {...post}/>
                         </div>
                     ))}
                 </div>

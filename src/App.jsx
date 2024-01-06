@@ -5,15 +5,17 @@ import authService from './appwrite/auth'
 import { login, logout } from './store/authSlice'
 import { Outlet } from 'react-router-dom'
 import {Header, Footer} from './compoents/index'
+
+
 function App() {
   const [loading, setLoading] = useState(true)
   const dispatch = useDispatch()
 
   useEffect(() => {
     authService.getCurrentUser()
-    .then((Data) => { //agr error aaya toh userData naam kr dena 
-      if(Data) {
-        dispatch(login({Data}));
+    .then((userData) => { //agr error aaya toh userData naam kr dena 
+      if(userData) {
+        dispatch(login({userData}));
       }else{
         dispatch(logout());
       }

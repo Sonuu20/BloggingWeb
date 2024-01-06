@@ -7,15 +7,14 @@ function AllPost() {
 
     const [posts, setPost] = useState([])
     useEffect(() => {
-
-    },[])
-
-    service.getPost([])
+        service.getPost([])
     .then((posts) => {
         if(posts) {
             setPost(posts.documents) //agr error aaya toh post kr dena
         }
     })
+    },[])
+
 
   return (
     <div className='w-full py-8'>
@@ -23,7 +22,7 @@ function AllPost() {
             <div className='flex flex-wrap'>
             {posts.map((post) => (
                 <div key={post.$id} className='p-2 w-1/4'>
-                    <PostCard post={post} />
+                    <PostCard {...post} />
                 </div>
         
             ))}
