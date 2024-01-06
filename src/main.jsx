@@ -11,7 +11,8 @@ import EditPost from './pages/EditPost'
 import Signup from './pages/Signup.jsx'
 import Post from "./pages/Post";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { AuthLayout, Login } from './compoents/index.js'
+import Login from './pages/Login.jsx'
+import { Protected } from './compoents/AuthLayout.jsx'
 
 const router = createBrowserRouter([
   {
@@ -25,42 +26,42 @@ const router = createBrowserRouter([
       {
         path: '/Login',
         element: (
-          <AuthLayout authentication={false}>
+          <Protected authentication={false}>
             <Login />
-          </AuthLayout>
+          </Protected>
         ),
       },
       {
         path: '/signup',
         element: (
-          <AuthLayout authentication={false}>
+          <Protected authentication={false}>
             <Signup />
-          </AuthLayout>
+          </Protected>
         ),
       },
       {
         path: '/all-posts', //it can be all-post
         element: (
-          <AuthLayout authentication={true}>
+          <Protected authentication={true}>
             {""}
             <AllPost />
-          </AuthLayout>
+          </Protected>
         ),
       },
       {
         path: '/add-post', //it can be add-post
         element: (
-          <AuthLayout authentication={true}>
+          <Protected authentication={true}>
             <AddPost />
-          </AuthLayout>
+          </Protected>
         ),
       },
       {
         path: '/edit-post/:slug', 
         element: (
-          <AuthLayout authentication={true}>
+          <Protected authentication={true}>
             <EditPost />
-          </AuthLayout>
+          </Protected>
         ),
       },
       {
