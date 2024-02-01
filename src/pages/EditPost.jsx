@@ -3,21 +3,19 @@ import { PostForm, Container } from '../compoents'
 import service from '../appwrite/conf'
 import { useNavigate, useParams } from 'react-router-dom'
 function EditPost() {
-  const [posts, setPost] = useState([])
+  const [post, setPost] = useState(null)
   const {slug} = useParams()
   const navigate = useNavigate()
 
   useEffect(() => {
     if(slug){
-      service.getPost(slug)
-      .then((post) => {
-        if(post)
-        {
+      service.getPost(slug).then((post) => {
+        if(post) {
           setPost(post)
-        }else{
-          navigate('/')
         }
       })
+    }else{
+      navigate('/')
     }
   },[slug, navigate])
 
@@ -25,7 +23,7 @@ function EditPost() {
   return post ?(
     <div className='py-8'>
       <Container>
-        <PostForm post={posts}/> 
+        <PostForm post={post}/> 
       </Container>
     </div>
   ) : null
