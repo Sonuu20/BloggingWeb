@@ -1,8 +1,9 @@
 import React from 'react'
-import {Container, Logo, LogoutBtn} from '../index'
+import {Container, LogoutBtn} from '../index'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Logo from "../../assets/Logo2.png"
 
 
 function Header() {
@@ -36,15 +37,18 @@ const navItems = [
 },
 ]
   return (
-    <header className='py-3 shadow bg-gray-500'>
+    <header className='py-3 shadow bg-gray-500 '>
       <Container>
-        <nav className='flex'>
+        <nav className='flex '>
           <div className='mr-4'>
             <Link to='/'>
-            <Logo width='70px'/>
+            <img 
+                   src={Logo}
+                   className=' bg-gray-500 h-full md:w-24 w-20'
+                   />
             </Link>
           </div>
-          <ul className='flex ml-auto'>
+          <ul className='flex ml-auto flex-wrap'>
             {navItems.map((item) => 
             item.active ? (
               <li key={item.name}>
