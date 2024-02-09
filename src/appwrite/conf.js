@@ -77,15 +77,15 @@ export class Service{
         }
     }
 
-    async getPosts(quries = [Query.equal("status","active")]) {
+    async getPosts(queries = [Query.equal("status","active")]) {
         try {
              return await this.databases.listDocuments(
                 config.DatabaseId,
                 config.CollectionId,
-                quries
+                queries
             )
         } catch (error) {
-            console.log("Appwrite service :: deletePost :: error", error);
+            console.log("Appwrite service :: getPosts :: error", error);
             return false;
         }
     }
@@ -119,10 +119,20 @@ export class Service{
     }
 
     getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
-            config.BucketId,
-            fileId
-        )
+        if (!fileId) {
+            console.error('Missing fileId parameter in getFilePreview');
+            return ''; // or handle accordingly
+        }
+    
+        try {
+            return this.bucket.getFilePreview(
+                config.BucketId,
+                fileId,
+            );
+        } catch (error) {
+            console.error('Error fetching file preview:', error);
+            return ''; // or handle accordingly
+        }
     }
 
 }
