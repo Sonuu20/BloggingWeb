@@ -47,7 +47,7 @@ const navItems = [
 },
 ]
   return (
-    <header className='py-3 md:py-4 shadow sticky top-0 z-50 px-0 md:px-10  bg-gray-500 '>
+    <header className='py-3 md:py-4 shadow sticky top-0 z-50 px-0 md:px-10 bg-[#00040F]/30 bg-clip-border backdrop-blur-sm bg-opacity-20'>
       <Container>
         <nav className='flex justify-between flex-wrap items-center'>
           <div className='mr-4'>
@@ -67,7 +67,7 @@ const navItems = [
             {navItems.map((item) => 
             item.active ? (
               <li key={item.name}>
-               <NavLink  onClick={closeNavbar} to={item.slug} className={({isActive}) =>`inline-block px-6 py-2 duration-200 hover:bg-blue-100  rounded-2xl  hover:text-black ${isActive ? 'text-black' : 'text-black/70' } `}>
+               <NavLink  onClick={closeNavbar} to={item.slug} className={({isActive}) =>`inline-block px-6 py-2 duration-200 hover:bg-blue-100  text-white rounded-2xl  hover:text-black ${isActive ? 'text-black' : 'text-black/70' } `}>
                 {item.name}
                 </NavLink>
               </li>
