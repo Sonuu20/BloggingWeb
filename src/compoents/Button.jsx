@@ -4,12 +4,12 @@ function Button({
     children,
     type = 'button',
     bgColor = 'bg-blue-600',
-    textColor = 'text-white',
+    textColor = '',
     className = '',
     ...props
 }) {
   return (
-    <button className={`px-4 py-6 hover:bg-blue-700 active:bg-blue-800 ${className} ${textColor} ${bgColor}`} {...props}>{children}</button>
+    <button className={`px-2 py-3  ${className} ${textColor} ${bgColor}`} {...props}>{children}</button>
   )
 }
 
