@@ -11,6 +11,7 @@ import Signup from "./Signup";
 import Login from "./Login";
 import PostCard from "./PostCard";
 import PostForm from "./PostForm/PostForm";
+import Loader from "./Loader";
 
 export {
     Header,
@@ -24,6 +25,7 @@ export {
     RTE,
     Signup,
     Login,
+    Loader,
     PostCard,
     PostForm
 }
