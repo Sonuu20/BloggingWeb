@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Logo from '../../assets/Log1.png'
+import Logo from '../Logo'
 
 function Footer() {
     const navigate = (url) => {
@@ -14,10 +14,7 @@ function Footer() {
           <div className="w-full p-6 md:w-1/2 lg:w-5/12">
             <div className="flex h-full flex-col justify-between">
                <div className="mb-4 inline-flex ml-3 items-center">
-                   <img 
-                   src={Logo}
-                   className=' bg-gray-400 max-w-[300px]'
-                   />
+                  <Logo width='300px' className=' bg-transparent' />
                  </div>
                 <div>
                   <p className="text-sm text-gray-700">

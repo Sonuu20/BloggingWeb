@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import {Container, LogoutBtn} from '../index'
+import {Container, LogoutBtn, Logo} from '../index'
 import { useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
-import Logo from "../../assets/Logo2.png"
 import hamburgerIcon from "../../assets/icon-hamburger.svg"
 import closeIcon from "../../assets/icon-close.svg"
 
@@ -52,10 +51,7 @@ const navItems = [
         <nav className='flex justify-between flex-wrap items-center'>
           <div className='mr-4'>
             <Link to='/'>
-            <img 
-                   src={Logo}
-                   className=' bg-gray-500 h-full md:w-24 w-20'
-                   />
+            <Logo width='170px' />
             </Link>
           </div>
 
