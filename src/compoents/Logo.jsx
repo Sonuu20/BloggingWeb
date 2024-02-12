@@ -1,8 +1,12 @@
 import React from 'react'
+import logo from "../assets/blog-logo.png"
 
-function Logo({width = '100px'}) {
+function Logo({
+  width = '100px',
+  className = ''
+}) {
   return (
-    <div>Logo</div>
+    <div className='border-white rounded-sm '><img src={logo} width={width} className={` bg-gray-400 ${className}`} /></div>
   )
 }
 
