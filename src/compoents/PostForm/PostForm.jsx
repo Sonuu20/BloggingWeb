@@ -1,33 +1,42 @@
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useForm } from 'react-hook-form';
 import service from '../../appwrite/conf';
-import {Button, Input, Select, RTE} from '../index';
+import {Button, Input, Select, RTE, Loader} from '../index';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function PostForm({post}) {
+
+ 
+
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
         defaultValues: {
             title: post?.title || '',
             slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active',
+            authorName: post?.authorName || ''
         },
     });
 
     const navigate = useNavigate();
     const userDetails = useSelector((state) => state.auth.userData);
+    const [loading, setLoading] = useState(false);
+    const [authorName, setAuthorName] = useState(userDetails.name || '');
+
+    const handleAuthorName = (e) => {
+      setAuthorName(e.target.value);
+    }
 
     // through this submit the post is being created, if the user is modifying the post that is already present then
     // then the modified value will only be overwrite otherwise the new value will be updated
     const submit = async (data) => {
+      setLoading(true)
       if (post) {
-        const file = data.image[0]
-          ? await service.uploadFile(data.image[0])
-          : null;
+        const file = data.image[0] ? await service.uploadFile(data.image[0]) : null ;
   
         if (file) {
-          service.deleteFile(post.image);
+          await service.deleteFile(post.image);
         }
   
         const dbPost = await service.updatePost(post.$id, {
@@ -36,6 +45,7 @@ function PostForm({post}) {
         });
   
         if (dbPost) {
+          setLoading(false)
           navigate(`/post/${dbPost.$id}`);
         }
       } else{
@@ -47,6 +57,7 @@ function PostForm({post}) {
           const dbPost = await service.createPost({
             ...data,
             userid: userDetails.$id,
+            authorName: userDetails.name
           });
   
           if (dbPost) {
@@ -78,13 +89,13 @@ function PostForm({post}) {
       });
 
       return () => {
-        subscription.unsubscribe()
+        subscription.unsubscribe();
       }
     },[slugTransform, setValue, watch]);
 
   return (
     <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
-      <div className='w-2/3 px-2'>
+      <div className=' w-full lg:w-2/3 px-2'>
         <Input 
         label="Title:"
         placeholder="Title"
@@ -111,7 +122,7 @@ function PostForm({post}) {
         />
       </div>
 
-      <div className='w-1/3 px-2'>
+      <div className='w-full lg:w-1/3 px-2'>
         <Input 
         label="Featured Image:"
         type="file"
@@ -122,24 +133,40 @@ function PostForm({post}) {
 
         {post && (
           <div className='w-full mb-4'>
-            <img src={service.getFilePreview(post.image)} alt={post.title} className='rounded-lg' />
+            <img src={service.getFilePreview(post.image)} 
+            alt={post.title} 
+            className='rounded-lg' />
           </div>
         )}
         
         <Select 
         options={["active", "inactive"]}
         label="Status"
-        className="mb-8 w-full"
+        className="mb-4 w-full"
         {...register("status", {required: true})}
         />
 
-        <Button 
+        <Input 
+        label = {post ? 'Updating as' : 'Posting as'}
+        value = {authorName}
+        placeholder = "authorName"
+        className = 'text-left mb-4'
+        {...register("authorName", {required: true})}
+        onChange = {handleAuthorName}
+        />
+
+        {loading ?
+             <div className='w-full place-items-center'><Loader></Loader></div>
+             :
+             <Button 
          type='submit'
-         bgColor={post ? "bg-green-500" : undefined}
-         className='w-full'
+         bgColor={post ? "bg-green-500" : "undefined"}
+         className= " hover:shadow-[#5ce1e6] cyan-button text-black shadow-sm hover:cursor-pointer duration-200 hover:drop-shadow-2xl rounded-lg w-full"
         >
           {post ? "Update": "Submit"}
         </Button>
+        }
+
       </div>
     </form>
   );
