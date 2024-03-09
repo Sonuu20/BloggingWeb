@@ -17,8 +17,8 @@ function AllPost() {
 
 
   return (
-    <div className='w-full py-8'>
-        <div><h1 className='text-[2rem] md:text-[2.5rem] text-center font-semibold'>All Posts</h1></div>
+    <div className='w-full sm:py-8 py-0'>
+        <div><h1 className='text-[2rem] md:text-[2.5rem] text-center text-white font-semibold'>All Posts</h1></div>
         <Container>
             {
                 posts.length>0 ?
