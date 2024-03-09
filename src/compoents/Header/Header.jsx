@@ -63,7 +63,7 @@ const navItems = [
             {navItems.map((item) => 
             item.active ? (
               <li key={item.name}>
-               <NavLink  onClick={closeNavbar} to={item.slug} className={({isActive}) =>`inline-block px-6 py-2 duration-200 hover:bg-blue-100  text-white rounded-2xl  hover:text-black ${isActive ? 'text-black' : 'text-black/70' } `}>
+               <NavLink  onClick={closeNavbar} to={item.slug} className={({isActive}) =>`inline-block px-6 py-2 duration-200 hover:bg-blue-100 active:bg-blue-300 text-white rounded-2xl  hover:text-black ${isActive ? 'text-black' : 'text-black/70' } `}>
                 {item.name}
                 </NavLink>
               </li>
