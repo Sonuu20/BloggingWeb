@@ -7,6 +7,10 @@ import { useSelector } from 'react-redux';
 
 function PostForm({post}) {
 
+  const navigate = useNavigate();
+  const userDetails = useSelector((state) => state.auth.userData);
+  const [loading, setLoading] = useState(false);
+ 
  
 
     const {register, handleSubmit, watch, setValue, control, getValues} = useForm({
@@ -15,14 +19,11 @@ function PostForm({post}) {
             slug: post?.$id || '',
             content: post?.content || '',
             status: post?.status || 'active',
-            authorName: post?.authorName || ''
+            authorName: post?.authorName || userDetails.name
         },
     });
 
-    const navigate = useNavigate();
-    const userDetails = useSelector((state) => state.auth.userData);
-    const [loading, setLoading] = useState(false);
-    const [authorName, setAuthorName] = useState(userDetails.name || '');
+   
 
     const handleAuthorName = (e) => {
       setAuthorName(e.target.value);
@@ -124,7 +125,7 @@ function PostForm({post}) {
 
       <div className='w-full lg:w-1/3 px-2'>
         <Input 
-        label="Featured Image:"
+        label="Featured Image*:"
         type="file"
         className="mb-4"
         accept="image/png, image/jpg, iamge/jpeg, image/gif"
@@ -148,11 +149,12 @@ function PostForm({post}) {
 
         <Input 
         label = {post ? 'Updating as' : 'Posting as'}
-        value = {authorName}
+        value = {userDetails.name}
         placeholder = "authorName"
+        readOnly
         className = 'text-left mb-4'
         {...register("authorName", {required: true})}
-        onChange = {handleAuthorName}
+        
         />
 
         {loading ?
