@@ -18,8 +18,8 @@ function Signup() {
         try {
             const signup = await authService.createAccount(data)
             if(signup) {
-                const session = await authService.getCurrentUser()
-                if(session) dispatch(authLogin(userData));
+                const userData = await authService.getCurrentUser()
+                if(userData) dispatch(authLogin(userData));
                 navigate("/")
             }
         } catch (error) {
@@ -52,7 +52,7 @@ function Signup() {
                   label="Name:"
                   placeholder="Enter your name"
                   type="text"
-                  {...register("Name",{
+                  {...register("name",{
                       required: true,
                       maxLength: 30,
                    })}
