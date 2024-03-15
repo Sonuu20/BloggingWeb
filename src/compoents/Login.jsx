@@ -69,6 +69,15 @@ function Login() {
                         //minlength & maxlength can be added for it
                     })}
                     />
+                     <p className="mt-2 text-center text-base text-black/60">
+                    
+                    <Link
+                        to="/forgotPassword"
+                        className="font-medium text-primary transition-all duration-200 hover:underline"
+                    >
+                       Forgot Password ?
+                    </Link>
+            </p>
                     <Button
                     type="submit"
                     className="w-full"
