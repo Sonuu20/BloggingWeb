@@ -13,6 +13,8 @@ import Post from "./pages/Post";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Login from './pages/Login.jsx'
 import { Protected } from './compoents/AuthLayout.jsx'
+import ForgotPassword from './compoents/ForgotPassword.jsx'
+import ResetPassword from './compoents/ResetPassword.jsx'
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
         path: '/post/:slug',
         element: <Post />
       },
+      {
+        path:'/forgotPassword',
+        element: <ForgotPassword />
+      },
+      {
+        path: '/resetPassword',
+        element: <ResetPassword />
+      }
     ]
   }
 ])
