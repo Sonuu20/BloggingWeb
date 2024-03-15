@@ -55,13 +55,31 @@ export class AuthService {
         }
     }
 
-    async updateName(name) {
+    async forgotPassword(email){
         try {
-            return await this.account.updateName(name);
+            return this.account.createRecovery(email, 'https://bloggingvista.netlify.app//resetPassword');
         } catch (error) {
-            console.log("Appwrite service :: logout :: error", error);
+            console.log("Appwrite service :: forgotPassword :: error", error);
+            alert('Cannot send the mail. Try after sometime! ');
         }
     }
+
+    async resetPassword(userid, secret, newPassword){
+        try {
+            return this.account.updateRecovery(userid, secret, newPassword, newPassword);
+        } catch (error) {
+            console.log("Appwrite service :: updatePassword :: error", error);
+            alert('Cannot send the mail. Try after sometime! ');
+        }
+    }
+
+    // async updateName(name) {
+    //     try {
+    //         return await this.account.updateName(name);
+    //     } catch (error) {
+    //         console.log("Appwrite service :: logout :: error", error);
+    //     }
+    // }
 }
 
 const authService = new AuthService();
