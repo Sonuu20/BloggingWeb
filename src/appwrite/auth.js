@@ -57,7 +57,7 @@ export class AuthService {
 
     async forgotPassword(email){
         try {
-            return this.account.createRecovery(email, 'https://bloggingvista.netlify.app//resetPassword');
+            return this.account.createRecovery(email, 'https://bloggingvista.netlify.app/resetPassword');
         } catch (error) {
             console.log("Appwrite service :: forgotPassword :: error", error);
             alert('Cannot send the mail. Try after sometime! ');
