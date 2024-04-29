@@ -5,6 +5,7 @@ import {Button, Input, Logo} from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
 import {useForm} from 'react-hook-form'
+import GoogleOAuth from './GoogleOAuth'
 
 
 function Login() {
@@ -84,6 +85,8 @@ function Login() {
                     >Sign in</Button>
                 </div>
             </form>
+
+            <GoogleOAuth />
         </div>
     </div>
   )

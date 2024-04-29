@@ -57,7 +57,7 @@ export class AuthService {
 
     async forgotPassword(email){
         try {
-            return this.account.createRecovery(email, 'https://bloggingvista.netlify.app/resetPassword');
+            return this.account.createRecovery(email, 'http://localhost:5173/resetPassword');
         } catch (error) {
             console.log("Appwrite service :: forgotPassword :: error", error);
             alert('Cannot send the mail. Try after sometime! ');
@@ -73,6 +73,14 @@ export class AuthService {
         }
     }
 
+    async createOAccount() {
+        try {
+            return this.account.createOAuth2Session('google', "https://bloggingvista.netlify.app", "https://bloggingvista.netlify.app/signup")
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
     // async updateName(name) {
     //     try {
     //         return await this.account.updateName(name);

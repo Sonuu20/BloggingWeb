@@ -7,8 +7,7 @@ import Button from './Button'
 import Container from './Container/Container'
 
 const ResetPassword = () => {
-    // const [newpassword, setNewPassword] = useState('')
-    // const [confirmPassword, setConfirmPassword] = useState('')
+    
     const [error, setError] = useState('')
     const {register, handleSubmit} = useForm({
       defaultValues: {
@@ -53,8 +52,6 @@ const ResetPassword = () => {
           <Input
             id="resetpassword"
             type="password"
-            // value={newpassword}
-            // onChange={(e) => setNewPassword(e.target.value)}
             {...register("newpassword", {
               required: true,
               minLength:  {

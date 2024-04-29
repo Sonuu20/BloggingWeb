@@ -5,6 +5,7 @@ import {Button, Input, Logo} from './index'
 import { useDispatch } from 'react-redux'
 import authService from '../appwrite/auth'
 import {useForm} from 'react-hook-form'
+import GoogleOAuth from './GoogleOAuth'
 
 
 function Signup() {
@@ -12,9 +13,12 @@ function Signup() {
     const dispatch = useDispatch()
     const [error, setError] = useState("") //null nahi toh empty string bhi de sakte h
     const {register, handleSubmit} = useForm()
+    const [isLoading, setIsLoading] = useState(false)
 
+    //account signup
     const create = async(data) => {
         setError("")
+        setIsLoading(true);
         try {
             const signup = await authService.createAccount(data)
             if(signup) {
@@ -24,8 +28,11 @@ function Signup() {
             }
         } catch (error) {
             setError(error.message)
+        }finally {
+            setIsLoading(false)
         }
-    }
+    };    
+
   return (
     <div className='flex items-center justify-center w-full'>
         <div className={`mx-2 w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}>
@@ -45,8 +52,10 @@ function Signup() {
                     </Link>
             </p>
             {error && <p className='text-red-600 mt-8 text-center'>{error}</p>}
-            <form onSubmit={handleSubmit(create)}>
-            <div className='space-y-5'>
+
+            
+            <form onSubmit={handleSubmit(create) }>
+            <div className='space-y-5 text-black'>
                 {/* Input for name */}
                   <Input 
                   label="Name:"
@@ -59,17 +68,17 @@ function Signup() {
                    />
                    {/* Input for email */}
                     <Input  
-                    label="Email:"
-                    placeholder="Enter your email.."
-                    type="email"
-                    {...register("email", {
+                     label="Email:"
+                     placeholder="Enter your email.."
+                     type="email"
+                     {...register("email", {
                         required: true,
                         validate: {
                             matchPatern: (value) => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                         "Email address must be a valid address",
                         }
-                    })}
-                    />
+                      })}
+                     />
                     {/* Input for password */}
                     <Input 
                     label="Password"
@@ -77,6 +86,11 @@ function Signup() {
                     type="password"
                     {...register("password", {
                         required: true,
+                        minLength:  {
+                            value: 5,
+                            message: 'Password is too short',
+                        },
+                        maxLength: 20,
                         //minlength & maxlength can be added for it
                     })}
                     />
@@ -88,6 +102,8 @@ function Signup() {
 
             </div>
             </form>
+            
+            <GoogleOAuth />
         </div>
     </div>
   )
