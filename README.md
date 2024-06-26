@@ -1,1 +1,1 @@
-To visit the love demo: https://bloggingvista.netlify.app
+To visit the live demo: https://bloggingvista.netlify.app
