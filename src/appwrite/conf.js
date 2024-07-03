@@ -119,6 +119,41 @@ export class Service{
         }
     }
 
+     async likePost(postId, userId) {
+        try{
+            const document = await this.databases.getDocument(
+                config.DatabaseId,
+                config.CollectionId,
+                postId
+            );
+            
+            const likedBy = document.likedBy || [];
+            const alredayLiked = likedBy.includes(userId);
+
+            const update = { likes: document.likes  };
+            console.log(alredayLiked);
+            console.log(likedBy);
+            
+            if(alredayLiked) {
+                update.likes--;
+                update.likedBy = likedBy.filter((id) => id !== userId);
+            } else{
+                update.likes++;
+                update.likedBy = likedBy.concat(userId);
+            }
+
+            const response = await this.databases.updateDocument(
+                config.DatabaseId,
+                config.CollectionId,
+                postId,
+                update
+              );
+
+        } catch (error) {
+            console.log("Appwrite service :: likePost :: error", error);
+        }
+     }
+
     getFilePreview(fileId) {
         if (!fileId) {
             console.error('Missing fileId parameter in getFilePreview');
@@ -135,6 +170,8 @@ export class Service{
             return ''; // or handle accordingly
         }
     }
+
+    
 
 }
 
