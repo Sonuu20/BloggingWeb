@@ -11,6 +11,7 @@ function Header() {
 
   const closeNavbar = () => {
     setNavOpen(false)
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   const toggleNavbar = () => {
@@ -50,7 +51,7 @@ const navItems = [
       <Container>
         <nav className='flex justify-between flex-wrap items-center'>
           <div className='mr-4'>
-            <Link to='/'>
+            <Link to='/' >
             <Logo width='170px' />
             </Link>
           </div>
