@@ -21,7 +21,7 @@ function AllPost() {
   return (
     <div className='w-full sm:py-8 py-0'>
         <div><h1 className='text-[2rem] md:text-[2.5rem] text-center text-white font-semibold'>All Posts</h1></div>
-       <Suspense fallback={<p>This is loading...</p>}>
+       <Suspense fallback={<p className='text-gray-200'>This is loading...</p>}>
        <Container>
             {
                 posts.length>0 ? (
@@ -33,7 +33,7 @@ function AllPost() {
             
                 ))}
                 </div> ): (
-                 <div className='text-center' >Nothing to Show</div>
+                 <div className='text-center text-white' >Nothing to Show</div>
                 )
             }
            
