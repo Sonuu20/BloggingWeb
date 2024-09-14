@@ -1,7 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Suspense} from 'react'
 import service from '../appwrite/conf'
-import { Container, PostCard } from '../compoents'
-
+// import { Container, PostCard } from '../compoents'
+ 
+const Container = React.lazy(() => import("../compoents/Container/Container"))
+const PostCard = React.lazy(() => import("../compoents/PostCard"))
 function AllPost() {
 
     const [posts, setPost] = useState([])
@@ -19,7 +21,8 @@ function AllPost() {
   return (
     <div className='w-full sm:py-8 py-0'>
         <div><h1 className='text-[2rem] md:text-[2.5rem] text-center text-white font-semibold'>All Posts</h1></div>
-        <Container>
+       <Suspense fallback={<p>This is loading...</p>}>
+       <Container>
             {
                 posts.length>0 ? (
                 <div className='flex flex-wrap'>
@@ -35,6 +38,7 @@ function AllPost() {
             }
            
         </Container>
+       </Suspense>
     </div>
   )
 }

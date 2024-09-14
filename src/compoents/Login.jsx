@@ -13,6 +13,7 @@ function Login() {
   const { register, handleSubmit } = useForm();
   const [error, setError] = useState(""); //null nahi toh empty string bhi de sakte h
   const [passVisible, SetPassVisible] = useState(false);
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handlePassVisibility = () => {
     SetPassVisible(!passVisible);
@@ -20,6 +21,7 @@ function Login() {
 
   const login = async (data) => {
     setError("");
+    setIsSigningIn(true);
     try {
       const session = await authService.login(data);
       if (session) {
@@ -29,6 +31,8 @@ function Login() {
       }
     } catch (error) {
       setError(error.message);
+    } finally{
+      setIsSigningIn(false);
     }
   };
   return (
@@ -99,8 +103,8 @@ function Login() {
                 Forgot Password ?
               </Link>
             </p>
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button type="submit" className="w-full text-gray-100">
+              {isSigningIn? "Signing in.." : "Sign in"}
             </Button>
           </div>
         </form>
