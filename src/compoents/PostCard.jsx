@@ -1,56 +1,96 @@
-import React, { useState } from 'react';
-import service from '../appwrite/conf';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import authService from '../appwrite/auth';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import { ThumbsUp } from "lucide-react";
+import service from "../appwrite/conf";
+import authService from "../appwrite/auth";
 
-function PostCard({$id, title, image, authorName, likes: initialLikes}) {
-
+function PostCard({ $id, title, image, authorName, likes: initialLikes }) {
   const [likes, setLikes] = useState(initialLikes);
-  const [canlike, onCanLike] = useState(true);
   const [hasLiked, setHasLiked] = useState(false);
   const userDetails = useSelector((state) => state.auth.userData);
 
-
   const handleLike = async () => {
-    if(!hasLiked) {
-    try {
-      await service.likePost($id, userDetails.$id);
-      setLikes(likes + 1);
-      setHasLiked(true);
-    
-    } catch (error) {
-      console.error('Error liking the post', error);
-       }
-
-     } else {
+    if (!hasLiked) {
       try {
         await service.likePost($id, userDetails.$id);
+        setLikes(likes + 1);
+        setHasLiked(true);
+      } catch (error) {
+        console.error("Error liking the post", error);
+      }
+    } else {
+      try {
+        await service.likePost($id, userDetails.$id); // Use `unlikePost` for unlike
         setLikes(likes - 1);
         setHasLiked(false);
-
       } catch (error) {
-        console.error('Error unliking post', error);
+        console.error("Error unliking the post", error);
       }
-      
-     }
-   }
+    }
+  };
 
   return (
-    <>
-      <div className='w-full h-96 card-hover rounded-xl p-4  bg-gray-700'>
-        <Link to={`/post/${$id}`}>
-            <div className='w-full justify-center mb-4 h-[68%]'>
-                <img src={service.getFilePreview(image)} alt={title} className='rounded-xl h-full w-full object-cover' />
-            </div>
-            <h2 className='text-xl font-bold text-white'>{title}</h2>
-            <h2 className=' text-base font-bold text-white'>Auhtor: {authorName}</h2> 
-         </Link>    
-         <i class="fa fa-thumbs-up text-2xl mr-2 text-gray-300 hover:text-blue-500" onClick={handleLike}></i>
-         <span className="text-gray-300 hover:text-blue-500">{likes}</span>
-      </div>
-    </>
-  )
+    <motion.div
+      className="w-full h-98 card-hover rounded-xl p-4 bg-gray-700 shadow-lg "
+      whileHover={{ scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 400 }}
+    >
+      <Link to={`/post/${$id}`}>
+        <motion.div
+          className="w-full justify-center mb-4 h-[68%] overflow-hidden rounded-xl"
+          whileHover={{ scale: 1.05 }}
+        >
+          <motion.img
+            src={service.getFilePreview(image)}
+            alt={title}
+            className="h-full w-full object-cover"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          />
+        </motion.div>
+        <motion.h2
+          className="text-xl font-bold text-white mb-1"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {title}
+        </motion.h2>
+        <motion.h2
+          className="text-base font-bold text-gray-300"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          Author: {authorName}
+        </motion.h2>
+      </Link>
+      <motion.div
+        className="mt-2 flex items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        <motion.button
+          className="flex items-center text-gray-300 hover:text-blue-500 transition-colors duration-200"
+          onClick={handleLike}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <ThumbsUp
+            className={`mr-2 ${hasLiked ? "text-blue-500" : "text-gray-300"}`}
+            size={24}
+          />
+          <span className={`${hasLiked ? "text-blue-500" : "text-gray-300"}`}>
+            {likes}
+          </span>
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  );
 }
 
-export default PostCard
+export default PostCard;
