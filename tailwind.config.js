@@ -8,6 +8,9 @@ export default {
     extend: {
       minWidth: {
         '56': '9rem'
+      },
+      height: {
+        '98': '26rem'
       }
     },
   },
