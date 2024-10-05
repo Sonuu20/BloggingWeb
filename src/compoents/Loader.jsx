@@ -1,13 +1,23 @@
-import React from 'react'
+import { motion } from "framer-motion";
 
-function Loader() {
+export default function ImprovedLoader() {
   return (
-    <div>
-        <div className='w-4 rounded-full bg-[#33BBCF]'></div>
-        <div className='w-4 rounded-full bg-[#33BBCF] animate-bounce'></div>
-        <div  class="w-4 h-4 rounded-full bg-[#33BBCF] animate-bounce [animation-delay:-.5s]"></div>
+    <div className="flex space-x-1 justify-center items-center">
+      {[0, 1, 2].map((index) => (
+        <motion.div
+          key={index}
+          className="w-2 h-2 bg-white rounded-full"
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.6, 1, 0.6],
+          }}
+          transition={{
+            duration: 1,
+            repeat: Infinity,
+            delay: index * 0.2,
+          }}
+        />
+      ))}
     </div>
-  )
+  );
 }
-
-export default Loader
