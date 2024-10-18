@@ -32,7 +32,6 @@ function GoogleOAuth() {
 
   return (
     <div>
-        <h3>Or </h3>
                 <Button
                  className='w-full flex bg-slate-900 hover:bg-slate-800 text-gray-200 items-center justify-center gap-2 outline-red-700'
                  onClick={handleGoogleSignup}
