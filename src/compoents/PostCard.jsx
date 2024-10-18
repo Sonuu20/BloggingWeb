@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { ThumbsUp } from "lucide-react";
 import service from "../appwrite/conf";
-import authService from "../appwrite/auth";
+import { Share2 } from "lucide-react";
 
 function PostCard({ $id, title, image, authorName, likes: initialLikes }) {
   const [likes, setLikes] = useState(initialLikes);
@@ -28,6 +28,22 @@ function PostCard({ $id, title, image, authorName, likes: initialLikes }) {
       } catch (error) {
         console.error("Error unliking the post", error);
       }
+    }
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: title,
+          text: `Check out this post: ${title}`,
+          url: window.location.origin + "/post/" + $id,
+        });
+      } catch (error) {
+        console.error("Error sharing:", error);
+      }
+    } else {
+      alert("Web Share API is not supported in your browser");
     }
   };
 
@@ -69,7 +85,7 @@ function PostCard({ $id, title, image, authorName, likes: initialLikes }) {
         </motion.h2>
       </Link>
       <motion.div
-        className="mt-2 flex items-center"
+        className="mt-2 flex items-center justify-between"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
@@ -87,6 +103,14 @@ function PostCard({ $id, title, image, authorName, likes: initialLikes }) {
           <span className={`${hasLiked ? "text-blue-500" : "text-gray-300"}`}>
             {likes}
           </span>
+        </motion.button>
+        <motion.button
+          className="text-gray-300 hover:text-blue-500 transition-colors duration-200"
+          onClick={handleShare}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Share2 size={24} />
         </motion.button>
       </motion.div>
     </motion.div>
