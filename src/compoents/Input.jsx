@@ -1,4 +1,5 @@
 import React, { useId, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const Input = React.forwardRef(function Input(
   { label, type = "text", className = "", forPassword = false, ...props },
@@ -33,7 +34,8 @@ const Input = React.forwardRef(function Input(
             className="absolute inset-y-0 right-0 flex items-center pr-3 hover:cursor-pointer"
             onClick={handlePassVisibility}
           >
-            <i className={`fa ${passVisible ? "fa-eye" : "fa-eye-slash"}`}></i>
+            {/* <i className={`fa ${passVisible ? "fa-eye" : "fa-eye-slash"}`}></i> */}
+            {passVisible ? <Eye color="#32536c" /> : <EyeOff color="#32536c" />}
           </div>
         )}
       </div>
