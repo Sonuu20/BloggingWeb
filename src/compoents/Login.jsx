@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
+import { motion } from "framer-motion";
 import { login as authLogin } from "../store/authSlice";
 import { Button, Input, Logo } from "./index";
-import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
-import { useForm } from "react-hook-form";
 import GoogleOAuth from "./GoogleOAuth";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
-  const [error, setError] = useState(""); //null nahi toh empty string bhi de sakte h
-  const [passVisible, SetPassVisible] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const [error, setError] = useState("");
+  const [passVisible, setPassVisible] = useState(false);
   const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handlePassVisibility = () => {
-    SetPassVisible(!passVisible);
+    setPassVisible(!passVisible);
   };
 
   const login = async (data) => {
@@ -31,87 +37,142 @@ function Login() {
       }
     } catch (error) {
       setError(error.message);
-    } finally{
+    } finally {
       setIsSigningIn(false);
     }
   };
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 20,
+        stiffness: 100,
+      },
+    },
+  };
+
+  const childVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        damping: 20,
+        stiffness: 100,
+      },
+    },
+  };
+
   return (
-    <div className="flex items-center justify-center w-full ">
-      <div
-        className={` w-full max-w-lg mx-2 bg-gray-100 rounded-xl p-10 border border-[#33BBCF]`}
+    <motion.div
+      className="flex items-center justify-center w-full min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 md:p-4 p-2"
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+    >
+      <motion.div
+        className="w-full md:max-w-xl max-w-lg bg-white rounded-2xl shadow-2xl p-8 space-y-6"
+        variants={childVariants}
       >
-        <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
-            <Logo width="100%" />
-          </span>
-        </div>
-        <h2 className="text-center text-2xl font-bold leading-tight">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-base text-black/60">
-          Don&apos;t have any account?&nbsp;
-          <Link
-            to="/signup"
-            className="font-medium text-primary transition-all duration-200 hover:underline"
+        <motion.div className="text-center" variants={childVariants}>
+          <Logo width="100" className="mx-auto mb-4" />
+          <h2 className="text-3xl font-bold text-gray-900">
+            Sign in to your account
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
+            >
+              Sign Up
+            </Link>
+          </p>
+        </motion.div>
+
+        {error && (
+          <motion.p
+            className="text-red-600 text-center bg-red-100 p-3 rounded-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            Sign Up
-          </Link>
-        </p>
-        {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
-        <form onSubmit={handleSubmit(login)} className="mt-8">
-          <div className="space-y-5">
+            {error}
+          </motion.p>
+        )}
+
+        <motion.form
+          onSubmit={handleSubmit(login)}
+          className="space-y-6"
+          variants={childVariants}
+        >
+          <Input
+            label="Email"
+            placeholder="Enter your email"
+            type="email"
+            error={errors.email}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                message: "Enter a valid email address",
+              },
+            })}
+          />
+          <div className="relative">
             <Input
-              label="Email:"
-              placeholder="Enter your email.."
-              type="email"
-              {...register("email", {
-                required: true,
-                validate: {
-                  matchPatern: (value) =>
-                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                    "Email address must be a valid address",
-                },
+              label="Password"
+              placeholder="Enter your password"
+              type={passVisible ? "text" : "password"}
+              error={errors.password}
+              {...register("password", {
+                required: "Password is required",
               })}
             />
-
-            <div className="flex">
-              <Input
-                label="Password"
-                placeholder="Enter your password"
-                className="w-[90%]"
-                type={passVisible ? "text" : "password"}
-                forPassword = {true}
-                {...register("password", {
-                  required: true,
-                  //minlength & maxlength can be added for it
-                })}
-              />{" "}
-              {/* <div className="pt-8 bg-[#E8F0FE] hover:cursor-pointer">
-                {passVisible ? (
-                  <i class="fa fa-eye " onClick={handlePassVisibility}></i>
-                ) : (
-                  <i class="fa fa-eye-slash " onClick={handlePassVisibility}></i>
-                )}
-              </div> */}
-            </div>
-
-            <p className="mt-2 text-center text-base text-black/60">
-              <Link
-                to="/forgotPassword"
-                className="font-medium text-primary transition-all duration-200 hover:underline"
-              >
-                Forgot Password ?
-              </Link>
-            </p>
-            <Button type="submit" className="w-full text-gray-100">
-              {isSigningIn? "Signing in.." : "Sign in"}
-            </Button>
+            <button
+              type="button"
+              onClick={handlePassVisibility}
+              className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
+            >
+              {passVisible ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
           </div>
-        </form>
+          <div className="flex items-center justify-between">
+            <Link
+              to="/forgotPassword"
+              className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+          <Button
+            type="submit"
+            className="w-full py-3 px-4 text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors duration-200"
+            disabled={isSigningIn}
+          >
+            {isSigningIn ? "Signing in..." : "Sign in"}
+          </Button>
+        </motion.form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300"></div>
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="px-2 bg-white text-gray-500">
+              Or continue with
+            </span>
+          </div>
+        </div>
 
         <GoogleOAuth />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
