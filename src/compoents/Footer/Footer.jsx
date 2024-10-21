@@ -85,7 +85,7 @@ function Footer() {
                 <li className="mb-4">
                   <Link
                     className="text-base font-medium text-gray-700 hover:text-gray-900"
-                    to="/privacyPolicy"
+                    to="/privacy-policy"
                     onClick={handleScrollToTop}
                   >
                     Privacy Policy
@@ -141,7 +141,7 @@ function Footer() {
                 <li className="mb-4">
                   <Link
                     className="text-base font-medium text-gray-700 hover:text-gray-900"
-                    to="/"
+                    to="/privacy-policy"
                     onClick={handleScrollToTop}
                   >
                     Privacy Policy

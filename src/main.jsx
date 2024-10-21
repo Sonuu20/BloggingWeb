@@ -80,11 +80,11 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: "/resetPassword",
+        path: "/reset-password",
         element: <ResetPassword />,
       },
       {
-        path: "/privacyPolicy",
+        path: "/privacy-policy",
         element: (
           <Protected authentication={false}>
             <PrivacyPolicy />
