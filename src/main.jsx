@@ -69,7 +69,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/:slug",
-        element: <Post />,
+        element: (
+          <Protected authentication={true}>
+            <Post />
+          </Protected>
+        ),
       },
       {
         path: "/forgotPassword",
@@ -81,7 +85,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/privacyPolicy",
-        element: <PrivacyPolicy />,
+        element: (
+          <Protected authentication={false}>
+            <PrivacyPolicy />
+          </Protected>
+        )
       },
     ],
   },
